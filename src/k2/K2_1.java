@@ -1,76 +1,70 @@
 package k2;
 
-// Angabe: https://vowi.fsinf.at/images/e/e5/TU_Wien-Einf%C3%BChrung_in_die_Programmierung_1_VU_%28Podlipnig%29_-_Einstufungstest_2018.pdf
-
 public class K2_1 {
+
     public static void main(String[] args) {
-        short result = (short) myMult(3,7);
+        short result = 0;
         String test = "Teststring_Einstufungstest";
 
-        System.out.println(result);
+        result = (short) countDivisors(299, 305);
 
-        System.out.println(findMaxChar(test));
-        System.out.println(findMaxChar("abcdefg"));
-        System.out.println(findMaxChar("4321"));
+        System.out.println("----- countDivisors -----");
+        System.out.println(countDivisors(1, 28));
+        System.out.println(countDivisors(101, 2001));
+        System.out.println(countDivisors(8, 8));
 
-        System.out.println(replaceNthChar(test, 1, '0'));
-        System.out.println(replaceNthChar(test, 3, '#'));
-        System.out.println(replaceNthChar(test, 10, '-'));
-        System.out.println(replaceNthChar(test, 30, 'X'));
-        System.out.println(replaceNthChar("A", 1, '#'));
+        System.out.println("----- findDoubles -----");
 
-        printPattern(3, '*');
-        printPattern(5, '+');
+        System.out.println(findDoubles(test));
+        System.out.println(findDoubles("Haarspangenaal"));
+        System.out.println(findDoubles("The Black Beast of Aaaaargh!"));
+        System.out.println(findDoubles("Schokoladenkuchen"));
+
+        System.out.println("----- reverseInsert -----");
+        System.out.println(reverseInsert(test, '.'));
+        System.out.println(reverseInsert("qwerty", '-'));
+        System.out.println(reverseInsert("Pinkie Pie", '!'));
+
+        System.out.println("----- printPattern -----");
+        printPattern(4, '!');
+        printPattern(5, '*');
     }
 
-    public static int myMult(int x, int y) {
-        int sum = 0;
-        for (int i = 0; i < x; i++) {
-            sum += y;
+    private static int countDivisors(int x, int y) {
+        int count = 0;
+        for (int i = x; i <= y; i++) {
+            if (i % 4 == 0 && i % 6 != 0)
+                count++;
         }
-        return sum;
+        return count;
     }
 
-    public static char findMaxChar(String text) {
-        if (text == null || text.isEmpty())
-            throw new IllegalArgumentException();
-
-        char highest = text.charAt(0);
-        for (int i = 1; i < text.length(); i++) {
-            char c = text.charAt(i);
-            if (c > highest)
-                highest = c;
+    private static int findDoubles(String text) {
+        int count = 0;
+        for (int i = 0; i < text.length() - 1; i++) {
+            if (text.charAt(i) == 'a' && text.charAt(i + 1) == 'a')
+                count++;
         }
-        return highest;
+        return count;
     }
 
-    public static String replaceNthChar(String text, int n, char replaceChar) {
-        if (text == null || text.length() == 0 || n < 0)
-            throw new IllegalArgumentException();
-
-        String s = "" + text.charAt(0);
-        for (int i = 1; i < text.length(); i++) {
-            s += (i % n == 0) ? replaceChar : text.charAt(i);
+    private static String reverseInsert(String text, char character) {
+        String result = "";
+        for (int i = text.length() - 1; i >= 0; i--) {
+            result += text.charAt(i);
+            if (i != 0)
+                result += character;
         }
-
-        return s;
+        return result;
     }
 
     public static void printPattern(int n, char character) {
-        if (n < 0)
-            throw new IllegalArgumentException();
-
-        for (int i = 0; i < n; i++) {
-            //spaces
-            for (int j = 0; j < i; j++) {
-                System.out.print(" ");
-            }
-            //characters
-            for (int k = 0; k < n + i; k++) {
-                System.out.print(character);
-            }
-
-            System.out.println();
+        for (int i = 1; i <= n; i++) {
+            if (i % 2 == 0)
+                for (int j = 0; j < 2 * n; j++) { System.out.print(character); }
+            else
+                for (int j = 0; j < n; j++) { System.out.print(character + "."); }
+            System.out.println(i);
         }
     }
 }

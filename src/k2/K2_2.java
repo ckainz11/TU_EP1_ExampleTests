@@ -4,67 +4,82 @@ public class K2_2 {
 
     public static void main(String[] args) {
         short result = 0;
-        String test = "Teststring_Einstufungstest";
+        String test = "Blaukraut";
 
-        result = (short) countDivisors(299, 305);
+        result = (short) getIntegerRoot(25);
+        System.out.println(result);
+        System.out.println(getIntegerRoot(144));
+        System.out.println(getIntegerRoot(13));
+        System.out.println(getIntegerRoot(1));
 
-        System.out.println("----- countDivisors -----");
-        System.out.println(countDivisors(1, 28));
-        System.out.println(countDivisors(101, 2001));
-        System.out.println(countDivisors(8, 8));
+        System.out.println(getThird("toss", "a", "coin"));
+        System.out.println(getThird("Blaukraut", "bleibt", test));
+        System.out.println(getThird("badger", "badger", "badger"));
 
-        System.out.println("----- findDoubles -----");
+        System.out.println(replaceA("TU Wien"));
+        System.out.println(replaceA("Hubba bubba!"));
+        System.out.println(replaceA("aaaa"));
 
-        System.out.println(findDoubles(test));
-        System.out.println(findDoubles("Haarspangenaal"));
-        System.out.println(findDoubles("The Black Beast of Aaaaargh!"));
-        System.out.println(findDoubles("Schokoladenkuchen"));
-
-        System.out.println("----- reverseInsert -----");
-        System.out.println(reverseInsert(test, '.'));
-        System.out.println(reverseInsert("qwerty", '-'));
-        System.out.println(reverseInsert("Pinkie Pie", '!'));
-
-        System.out.println("----- printPattern -----");
-        printPattern(4, '!');
-        printPattern(5, '*');
+        printBars(2);
+        printBars(19);
+        printBars(20);
+        printBars(21);
     }
 
-    private static int countDivisors(int x, int y) {
-        int count = 0;
-        for (int i = x; i <= y; i++) {
-            if (i % 4 == 0 && i % 6 != 0)
-                count++;
+    public static int getIntegerRoot(int k) {
+        for (int i = 1; (i * i) <= k; i++) {
+             if ((i * i) == k)
+                 return i;
         }
-        return count;
+        return -1;
     }
 
-    private static int findDoubles(String text) {
-        int count = 0;
-        for (int i = 0; i < text.length() - 1; i++) {
-            if (text.charAt(i) == 'a' && text.charAt(i + 1) == 'a')
-                count++;
-        }
-        return count;
+    public static String getThird(String a, String b, String c) {
+        boolean firstEqualsSecond = a.equals(b);
+        boolean firstEqualsThird = a.equals(c);
+        boolean secondEqualsThird = b.equals(c);
+
+        if (firstEqualsSecond && firstEqualsThird)
+            return "alle gleich";
+        if (firstEqualsSecond)
+            return c;
+        if (firstEqualsThird)
+            return b;
+        if (secondEqualsThird)
+            return a;
+
+        return "alle unterschiedlich";
     }
 
-    private static String reverseInsert(String text, char character) {
+    public static String replaceA(String s) {
+        int count = 1;
         String result = "";
-        for (int i = text.length() - 1; i >= 0; i--) {
-            result += text.charAt(i);
-            if (i != 0)
-                result += character;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == 'a') {
+                result += count;
+                count++;
+            } else
+                result += s.charAt(i);
         }
+
         return result;
     }
 
-    public static void printPattern(int n, char character) {
-        for (int i = 1; i <= n; i++) {
-            if (i % 2 == 0)
-                for (int j = 0; j < 2 * n; j++) { System.out.print(character); }
-            else
-                for (int j = 0; j < n; j++) { System.out.print(character + "."); }
-            System.out.println(i);
+    public static void printBars(int i) {
+        String line1 = "";
+        String line2 = "";
+        for (int num = 1; num <= i; num++) {
+            if (num % 3 == 0) {
+                line2 += num;
+                line2 += num % 2 == 0 ? '-' : '+';
+            }
+            else {
+                line1 += num;
+                line1 += num % 2 == 0 ? '+' : '-';
+            }
         }
+        System.out.println(line1);
+        if (line2.length() != 0)
+            System.out.println(line2);
     }
 }
