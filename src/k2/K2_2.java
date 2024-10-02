@@ -27,57 +27,57 @@ public class K2_2 {
     }
 
     public static int getIntegerRoot(int k) {
-        for (int i = 1; (i * i) <= k; i++) {
-             if ((i * i) == k)
-                 return i;
+        for (int i = 0; i < k; i++) {
+            if (i * i == k)
+                return i;
         }
         return -1;
     }
 
     public static String getThird(String a, String b, String c) {
-        boolean firstEqualsSecond = a.equals(b);
-        boolean firstEqualsThird = a.equals(c);
-        boolean secondEqualsThird = b.equals(c);
-
-        if (firstEqualsSecond && firstEqualsThird)
+        if (a.equals(b) && b.equals(c))
             return "alle gleich";
-        if (firstEqualsSecond)
+        if (a.equals(b))
             return c;
-        if (firstEqualsThird)
-            return b;
-        if (secondEqualsThird)
+        if (b.equals(c))
             return a;
+        if (a.equals(c))
+            return b;
 
         return "alle unterschiedlich";
     }
 
     public static String replaceA(String s) {
-        int count = 1;
-        String result = "";
+        String out = "";
+        int aCount = 1;
         for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == 'a') {
-                result += count;
-                count++;
-            } else
-                result += s.charAt(i);
+            if (s.charAt(i) != 'a')
+                out += s.charAt(i);
+            else {
+                out += aCount;
+                aCount++;
+            }
         }
-
-        return result;
+        return out;
     }
 
     public static void printBars(int i) {
         String line1 = "";
         String line2 = "";
+        char line1Sep = '+';
+        char line2Sep = '-';
         for (int num = 1; num <= i; num++) {
             if (num % 3 == 0) {
+                line2Sep = line2Sep == '+' ? '-' : '+';
                 line2 += num;
-                line2 += num % 2 == 0 ? '-' : '+';
-            }
-            else {
+                line2 += line2Sep;
+            } else {
+                line1Sep = line1Sep == '-' ? '+' : '-';
                 line1 += num;
-                line1 += num % 2 == 0 ? '+' : '-';
+                line1 += line1Sep;
             }
         }
+
         System.out.println(line1);
         if (line2.length() != 0)
             System.out.println(line2);

@@ -60,14 +60,15 @@ public class K2_3 {
         String out = "";
         for (int i = 0; i < text.length(); i++) {
             char c = text.charAt(i);
-            if (Character.isDigit(c)) {
+            if (!Character.isDigit(c))
+                out += c;
+            else {
                 if (lastNumIndex == -1)
                     out += i;
                 else
                     out += (i - lastNumIndex - 1);
                 lastNumIndex = i;
-            } else
-                out += c;
+            }
         }
         return out;
     }
