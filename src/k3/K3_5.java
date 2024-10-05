@@ -76,8 +76,9 @@ public class K3_5 {
         if (sequence.isEmpty() || repSequence.isEmpty())
             return "";
 
+        char first = sequence.charAt(0);
         if (repSequence.charAt(0) == '1')
-            return "" + sequence.charAt(0) + sequence.charAt(0) + replicateCharacters(sequence.substring(1), repSequence.substring(1));
-        else return sequence.charAt(0) + replicateCharacters(sequence.substring(1), repSequence.substring(1));
+            return "" + first + first + replicateCharacters(sequence.substring(1), repSequence.substring(1));
+        else return first + replicateCharacters(sequence.substring(1), repSequence.substring(1));
     }
 }
