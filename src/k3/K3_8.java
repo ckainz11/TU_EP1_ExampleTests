@@ -4,61 +4,76 @@ import java.util.Arrays;
 
 public class K3_8 {
     public static void main(String[] args) {
-        int[] test1 = {3, 0, 6, -1, 1};
-        int[][] test2 = {{0}, {6, -5}, {0, 0}, {0, 1, 2, 0}};
-        int[][] test3 = {{1, 2, 7, 3, 0}, {-8}, {0, 2}, {1, 4, -2, 1}};
+        int[][] test1 = {{1}, {1, 2, 3}, {1, 2, 3, 4}, {1, 2}};
+        int[][] test2 = {{1, 2, 3}, {0}, {1, 2}, {0}, {1}};
+        int[] seq = {2, 8, 8, 5, 2, 5, 7, 3};
 
-        boolean[][] result1 = create(new int[]{3});
+        int[][] result1 = repeat(test1, new int[]{1, -2, 1, 0});
         System.out.println(Arrays.deepToString(result1));
-        boolean[][] result2 = create(new int[]{-2, 0});
+        int[][] result2 = repeat(test2, new int[]{1, 0, -3, 2, 0});
         System.out.println(Arrays.deepToString(result2));
-        boolean[][] result3 = create(new int[]{});
-        System.out.println(Arrays.deepToString(result3));
 
-        move(test2);
+        rasp(test1);
+        System.out.println(Arrays.deepToString(test1));
+        rasp(test2);
         System.out.println(Arrays.deepToString(test2));
-        move(test3);
-        System.out.println(Arrays.deepToString(test3));
 
-        System.out.println(oddOccurrences("This is not a test!", 's'));
-        System.out.println(oddOccurrences("This is not a test!", 'T'));
-        System.out.println(oddOccurrences("This is not a test!", 't'));
-        System.out.println(oddOccurrences("This is not a test!", ' '));
-        System.out.println(oddOccurrences("",'x'));
+        System.out.println(hasNOrderedPairs(seq, 4, 0));
+        System.out.println(hasNOrderedPairs(seq, 2, 2));
+        System.out.println(hasNOrderedPairs(seq, 1, 3));
+        System.out.println(hasNOrderedPairs(seq, 3, 3));
+        System.out.println(hasNOrderedPairs(seq, 0, 6));
     }
 
-    static boolean[][] create(int[] input) {
-        boolean[][] out = new boolean[input.length][];
-        for (int i = 0; i < input.length; i++) {
-            int num = input[i];
-            boolean[] row = new boolean[Math.max(num + 1, 3)];
-            if (num >= 0)
-                row[num] = true;
-            out[i] = row;
+    static int[][] repeat(int[][] input, int[] reps) {
+        int[][] out = new int[input.length][];
+        for (int i = 0; i < reps.length; i++) {
+            int rep = Math.abs(reps[i]) + 1;
+            int[] row = input[i];
+            out[i] = new int[rep * row.length];
+            // reverse row
+            if (reps[i] < 0) {
+                int[] newRow = new int[input[i].length];
+                for (int x = 0; x < row.length; x++) {
+                    newRow[row.length - x - 1] = row[x];
+                }
+                row = newRow;
+            }
+            for (int j = 0; j < rep; j++) {
+                for (int x = 0; x < out[i].length; x++) {
+                    out[i][x] = row[x % row.length];
+                }
+            }
+
         }
         return out;
     }
 
-    static void move(int[][] input) {
-        for (int y = 0; y < input.length; y++) {
-            int[] row = input[y];
-            int[] newRow = new int[row[row.length - 1] == 0 ? row.length : row.length + 1];
-            for (int x = 1; x < newRow.length; x++) {
-                newRow[x] = row[x - 1];
+    static void rasp(int[][] input) {
+        for (int i = 0; i < input.length - 1; i+=2) {
+            // line 1
+            int last = input[i][input[i].length - 1];
+            int[] row = input[i];
+            input[i] = new int[input[i].length - 1];
+            for (int j = 0; j < input[i].length; j++) {
+                input[i][j] = row[j];
             }
-            input[y] = newRow;
+            // line 2
+            int[] nextRow = input[i + 1];
+            input[i + 1] = new int[input[i + 1].length + 1];
+            for (int j = 0; j < nextRow.length; j++) {
+                input[i+1][j] = nextRow[j];
+            }
+            input[i+1][nextRow.length] = last;
         }
     }
 
-    static boolean oddOccurrences(String s, char ch) {
-        if (s.isEmpty())
-            return false;
-        if (s.length() == 1)
-            return s.charAt(0)  == ch;
+    static boolean hasNOrderedPairs(int[] seq, int n, int index) {
+        if (index >= seq.length - 1)
+            return n == 0;
 
-        if (s.charAt(0) == ch)
-            return !oddOccurrences(s.substring(1), ch);
-        else return oddOccurrences(s.substring(1), ch);
-
+        if (seq[index] <= seq[index + 1])
+            return hasNOrderedPairs(seq, n - 1, index + 1);
+        return hasNOrderedPairs(seq, n, index + 1);
     }
 }
